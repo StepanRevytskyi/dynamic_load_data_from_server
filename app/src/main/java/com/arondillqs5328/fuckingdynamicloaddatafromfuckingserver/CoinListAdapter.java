@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.data.Coin;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,10 +19,6 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.CoinVi
 
     public CoinListAdapter(List<Coin> coins) {
         mCoins = coins;
-    }
-
-    public void addNewCoins(List<Coin> coins) {
-        mCoins.addAll(coins);
     }
 
     @NonNull
@@ -41,18 +39,27 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.CoinVi
         return mCoins.size();
     }
 
-    public class CoinViewHolder extends RecyclerView.ViewHolder {
+    class CoinViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView mLogoImageView;
         private TextView mIdTextView;
         private TextView mNameTextView;
 
         CoinViewHolder(@NonNull View itemView) {
             super(itemView);
+            mLogoImageView = itemView.findViewById(R.id.coin_logo);
             mIdTextView = itemView.findViewById(R.id.id);
             mNameTextView = itemView.findViewById(R.id.name);
         }
 
-        public void bind(Coin coin) {
+        void bind(Coin coin) {
+            String coinLogoUrl = Common.LOGO_BASE_URL + coin.getId() + ".png";
+
+            Picasso.get()
+                    .load(coinLogoUrl)
+                    .error(R.drawable.ic_broken_image_24dp)
+                    .into(mLogoImageView);
+
             mIdTextView.setText(String.valueOf(coin.getId()));
             mNameTextView.setText(coin.getName());
         }

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isLoading = true;
     private Integer mStart = 1;
-    private Integer mLimit = 25;
+    private Integer mLimit = 50;
     private List<Coin> mCoins = new ArrayList<>();
 
     @Override
@@ -63,10 +63,14 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<CoinListResponse>() {
             @Override
             public void onResponse(Call<CoinListResponse> call, Response<CoinListResponse> response) {
-                mCoins.addAll(response.body().getCoinList());
-                mAdapter.notifyDataSetChanged();
-                mStart = mStart + mLimit;
+                if (response.body().getStatus().getErrorCode() == 0) {
+                    mCoins.addAll(response.body().getCoinList());
+                    mAdapter.notifyDataSetChanged();
+                    mStart = mStart + mLimit;
+                }
                 isLoading = true;
+
+                Log.i("TAG_size = ", String.valueOf(mCoins.size()));
                 //TODO:після загрузки сховати індикатор загрузки для recyclerview.footer
             }
 
