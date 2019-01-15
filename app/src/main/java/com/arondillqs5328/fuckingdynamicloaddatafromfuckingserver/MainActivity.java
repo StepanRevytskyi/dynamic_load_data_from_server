@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.data.Coin;
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.data.CoinListResponse;
+import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.mvp.Contract;
+import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.mvp.Presenter;
+import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.mvp.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +21,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
-
-    private CoinApi mCoinApi;
+public class MainActivity extends AppCompatActivity implements Contract.View {
+    private Presenter mPresenter;
 
     private RecyclerView mRecyclerView;
     private CoinListAdapter mAdapter;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mCoinApi = FuckingApplication.sRetrofit.create(CoinApi.class);
+        mPresenter = new Presenter(this);
 
         mAdapter = new CoinListAdapter(mCoins);
 
@@ -47,37 +49,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isLoading && ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findLastVisibleItemPosition() == mRecyclerView.getLayoutManager().getItemCount() - 1) {
-                    //TODO:додати індикатор загрузки для recyclerview.footer
-                    loadCoinListFromServer(Common.API_KEY, mStart, mLimit);
+                if (isLoading && ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition() == mRecyclerView.getLayoutManager().getItemCount() - 1) {
+                    mPresenter.loadMore(mStart, mLimit, Common.API_KEY);
                     isLoading = false;
                 }
             }
         });
 
-        loadCoinListFromServer(Common.API_KEY, mStart, mLimit);
+        mPresenter.loadMore(mStart, mLimit, Common.API_KEY);
     }
 
-    private void loadCoinListFromServer(String apiKey, Integer start, Integer limit) {
-        Call<CoinListResponse> call = mCoinApi.getCoinListResponse(apiKey, start, limit);
-        call.enqueue(new Callback<CoinListResponse>() {
-            @Override
-            public void onResponse(Call<CoinListResponse> call, Response<CoinListResponse> response) {
-                if (response.body().getStatus().getErrorCode() == 0) {
-                    mCoins.addAll(response.body().getCoinList());
-                    mAdapter.notifyDataSetChanged();
-                    mStart = mStart + mLimit;
-                }
-                isLoading = true;
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
+    }
 
-                Log.i("TAG_size = ", String.valueOf(mCoins.size()));
-                //TODO:після загрузки сховати індикатор загрузки для recyclerview.footer
-            }
+    @Override
+    public void showCoinList(List<Coin> coins) {
+        mCoins.addAll(coins);
+        mAdapter.notifyDataSetChanged();
+    }
 
-            @Override
-            public void onFailure(Call<CoinListResponse> call, Throwable t) {
-                Log.i("ERROR", t.toString());
-            }
-        });
+    @Override
+    public void updateParameters() {
+        mStart = mStart + mLimit;
+        isLoading = true;
     }
 }

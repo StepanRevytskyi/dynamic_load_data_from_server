@@ -31,7 +31,15 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.CoinVi
 
     @Override
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
-        coinViewHolder.bind(mCoins.get(i));
+        coinViewHolder.mIdTextView.setText(String.valueOf(mCoins.get(i).getId()));
+        coinViewHolder.mNameTextView.setText(mCoins.get(i).getName());
+
+        String coinLogoUrl = Common.LOGO_BASE_URL + mCoins.get(i).getId() + ".png";
+
+        Picasso.get()
+                .load(coinLogoUrl)
+                .error(R.drawable.ic_broken_image_24dp)
+                .into(coinViewHolder.mLogoImageView);
     }
 
     @Override
@@ -50,18 +58,6 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.CoinVi
             mLogoImageView = itemView.findViewById(R.id.coin_logo);
             mIdTextView = itemView.findViewById(R.id.id);
             mNameTextView = itemView.findViewById(R.id.name);
-        }
-
-        void bind(Coin coin) {
-            String coinLogoUrl = Common.LOGO_BASE_URL + coin.getId() + ".png";
-
-            Picasso.get()
-                    .load(coinLogoUrl)
-                    .error(R.drawable.ic_broken_image_24dp)
-                    .into(mLogoImageView);
-
-            mIdTextView.setText(String.valueOf(coin.getId()));
-            mNameTextView.setText(coin.getName());
         }
     }
 }
