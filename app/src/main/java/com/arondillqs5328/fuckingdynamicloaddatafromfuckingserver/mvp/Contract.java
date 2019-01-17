@@ -13,11 +13,11 @@ public interface Contract {
 
     interface Presenter {
         void detachView();
-        void loadMore(int start, int limit, String API_KEY);
+        void loadMore(int start, int limit);
         void onSuccess(List<Coin> coins);
     }
 
     interface Repository {
-        void load(int start, int limit, String API_KEY);
+        void load(int start, int limit);
     }
 }

@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isLoading && ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition() == mRecyclerView.getLayoutManager().getItemCount() - 1) {
-                    mPresenter.loadMore(mStart, mLimit, Common.API_KEY);
+                    mPresenter.loadMore(mStart, mLimit);
                     isLoading = false;
                 }
             }
         });
 
-        mPresenter.loadMore(mStart, mLimit, Common.API_KEY);
+        mPresenter.loadMore(mStart, mLimit);
     }
 
     @Override

@@ -19,8 +19,8 @@ public class Presenter implements Contract.Presenter{
     }
 
     @Override
-    public void loadMore(int start, int limit, String API_KEY) {
-        mRepository.load(start, limit, API_KEY);
+    public void loadMore(int start, int limit) {
+        mRepository.load(start, limit);
     }
 
     @Override

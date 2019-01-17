@@ -20,8 +20,8 @@ public class Repository implements Contract.Repository {
     }
 
     @Override
-    public void load(int start, int limit, String API_KEY) {
-        Call<CoinListResponse> call = mCoinApi.getCoinListResponse(API_KEY, start, limit);
+    public void load(int start, int limit) {
+        Call<CoinListResponse> call = mCoinApi.getCoinListResponse(start, limit);
         call.enqueue(new Callback<CoinListResponse>() {
             @Override
             public void onResponse(Call<CoinListResponse> call, Response<CoinListResponse> response) {
