@@ -12,6 +12,6 @@ public class FuckingApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        sRetrofit = RetrofitClient.getRetrofitInstance();
+        sRetrofit = new RetrofitClient().getRetrofitInstance();
     }
 }
