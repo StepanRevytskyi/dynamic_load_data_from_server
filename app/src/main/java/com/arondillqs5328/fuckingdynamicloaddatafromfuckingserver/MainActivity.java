@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mCoinApi = FuckingApplication.sRetrofit.create(CoinApi.class);
+        mCoinApi = MyApplication.sRetrofit.create(CoinApi.class);
 
         mAdapter = new CoinListAdapter(mCoins);
 
