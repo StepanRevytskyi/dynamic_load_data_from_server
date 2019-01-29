@@ -16,7 +16,7 @@ public class Repository implements Contract.Repository {
 
     public Repository(Presenter presenter) {
         mPresenter = presenter;
-        mCoinApi = FuckingApplication.sRetrofit.create(CoinApi.class);
+        mCoinApi = MyApplication.sRetrofit.create(CoinApi.class);
     }
 
     @Override
