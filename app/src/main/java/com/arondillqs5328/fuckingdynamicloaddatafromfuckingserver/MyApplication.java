@@ -4,7 +4,7 @@ import android.app.Application;
 
 import retrofit2.Retrofit;
 
-public class FuckingApplication extends Application {
+public class MyApplication extends Application {
 
     public static Retrofit sRetrofit;
 

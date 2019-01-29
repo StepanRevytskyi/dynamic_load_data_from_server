@@ -3,7 +3,7 @@ package com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.mvp;
 import android.util.Log;
 
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.CoinApi;
-import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.FuckingApplication;
+import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.MyApplication;
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.data.CoinListResponse;
 
 import retrofit2.Call;
@@ -16,7 +16,7 @@ public class Repository implements Contract.Repository {
 
     public Repository(Presenter presenter) {
         mPresenter = presenter;
-        mCoinApi = FuckingApplication.sRetrofit.create(CoinApi.class);
+        mCoinApi = MyApplication.sRetrofit.create(CoinApi.class);
     }
 
     @Override
