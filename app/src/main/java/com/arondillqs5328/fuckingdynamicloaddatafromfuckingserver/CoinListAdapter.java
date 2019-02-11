@@ -34,7 +34,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.CoinVi
         coinViewHolder.mIdTextView.setText(String.valueOf(mCoins.get(i).getId()));
         coinViewHolder.mNameTextView.setText(mCoins.get(i).getName());
 
-        String coinLogoUrl = Common.LOGO_BASE_URL + mCoins.get(i).getId() + ".png";
+        String coinLogoUrl = "https://s2.coinmarketcap.com/static/img/coins/128x128/" + mCoins.get(i).getId() + ".png";
 
         Picasso.get()
                 .load(coinLogoUrl)

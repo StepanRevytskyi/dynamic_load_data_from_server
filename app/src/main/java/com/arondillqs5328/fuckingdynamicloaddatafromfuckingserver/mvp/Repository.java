@@ -3,7 +3,6 @@ package com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.mvp;
 import android.util.Log;
 
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.CoinApi;
-import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.FuckingApplication;
 import com.arondillqs5328.fuckingdynamicloaddatafromfuckingserver.data.CoinListResponse;
 
 import retrofit2.Call;
@@ -11,12 +10,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Repository implements Contract.Repository {
-    private Presenter mPresenter;
     private CoinApi mCoinApi;
+    private MainCallback mCallback;
 
-    public Repository(Presenter presenter) {
-        mPresenter = presenter;
-        mCoinApi = FuckingApplication.sRetrofit.create(CoinApi.class);
+    public Repository(CoinApi coinApi) {
+        mCoinApi = coinApi;
+    }
+
+    public void setCallback(MainCallback callback) {
+        mCallback = callback;
     }
 
     @Override
@@ -26,13 +28,14 @@ public class Repository implements Contract.Repository {
             @Override
             public void onResponse(Call<CoinListResponse> call, Response<CoinListResponse> response) {
                 if (response.body().getStatus().getErrorCode() == 0) {
-                    mPresenter.onSuccess(response.body().getCoinList());
+                    mCallback.onSuccess(response.body().getCoinList());
                 }
             }
 
             @Override
             public void onFailure(Call<CoinListResponse> call, Throwable t) {
                 Log.i("ERROR", t.toString());
+                mCallback.onFailed();
             }
         });
     }

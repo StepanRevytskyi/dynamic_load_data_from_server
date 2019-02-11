@@ -20,7 +20,7 @@ public class RetrofitClient {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request().newBuilder()
-                                .addHeader("X-CMC_PRO_API_KEY", Common.API_KEY)
+                                .addHeader("X-CMC_PRO_API_KEY", "63405db2-b682-4c22-8af7-255b21e3f09d")
                                 .build();
 
                         return chain.proceed(request);

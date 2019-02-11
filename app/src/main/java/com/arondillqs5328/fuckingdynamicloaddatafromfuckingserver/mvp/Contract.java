@@ -9,12 +9,12 @@ public interface Contract {
     interface View {
         void showCoinList(List<Coin> coins);
         void updateParameters();
+        void showNoInternetConnection();
     }
 
     interface Presenter {
         void detachView();
         void loadMore(int start, int limit);
-        void onSuccess(List<Coin> coins);
     }
 
     interface Repository {
